@@ -33,7 +33,7 @@ pipeline {
             }
         }
     }
-    stage ('Artifactory Deploy'){
+    stage('Artifactory Deploy'){
         when {
             branch "master"
         }
