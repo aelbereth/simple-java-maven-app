@@ -37,7 +37,7 @@ pipeline {
             when {
                 branch "master"
             }
-            steps{
+            steps {
                 def server = Artifactory.server('artifactory')
                 def rtMaven = Artifactory.newMavenBuild()
                 rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
