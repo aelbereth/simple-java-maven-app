@@ -20,7 +20,7 @@ pipeline {
                     }
                 }
             }
-        stage('SonarQube analysis') {
+        stage('QA') {
           steps {
             withSonarQubeEnv('SonarQube') {
               // requires SonarQube Scanner for Maven 3.2+
@@ -28,25 +28,25 @@ pipeline {
             }
           }
         }
-        stage('Deliver') {
+        stage('M2Store') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
             }
         }
-        stage('Artifactory Deploy'){
+        stage('Package'){
             when {
                 branch "master"
             }
             steps {
-            script {
-                def server = Artifactory.server('artifactory')
-                def rtMaven = Artifactory.newMavenBuild()
-                rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
-                rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
-                rtMaven.tool = 'Maven3'
-                def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'install'
-                server.publishBuildInfo buildInfo
-            }
+                script {
+                    def server = Artifactory.server('artifactory')
+                    def rtMaven = Artifactory.newMavenBuild()
+                    rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+                    rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
+                    rtMaven.tool = 'Maven3'
+                    def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'install'
+                    server.publishBuildInfo buildInfo
+                }
             }
         }
     }
