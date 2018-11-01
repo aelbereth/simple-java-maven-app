@@ -38,6 +38,7 @@ pipeline {
                 branch "master"
             }
             steps {
+            script {
                 def server = Artifactory.server('artifactory')
                 def rtMaven = Artifactory.newMavenBuild()
                 rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
@@ -45,6 +46,7 @@ pipeline {
                 rtMaven.tool = 'Maven3'
                 def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'install'
                 server.publishBuildInfo buildInfo
+            }
             }
         }
     }
