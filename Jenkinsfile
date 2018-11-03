@@ -26,7 +26,17 @@ pipeline {
                 }
             }
         }
-        stage("Runing unit tests") {
+        stage('Testing') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+        stage('Runing unit tests') {
             steps {
                 script {
                     try {
@@ -41,7 +51,7 @@ pipeline {
                 step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
             }
         }
-        stage("Runing integration tests") {
+        stage('Runing integration tests') {
             steps {
                 script {
                     try {
