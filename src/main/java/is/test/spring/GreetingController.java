@@ -15,6 +15,3 @@ public class GreetingController {
     }
 
 }
-//pid=\$(lsof -i:8989 -t); kill -TERM \$pid || kill -KILL \$pid
-//lsof -i:7070 -t
-//kill -TERM || kill -KILL pid
