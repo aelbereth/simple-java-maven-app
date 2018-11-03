@@ -81,7 +81,7 @@ pipeline {
         }
         stage ('Production deployment') {
             when {
-                branch 'staging'
+                branch 'master'
              }
              steps {
                  input id: 'DeployToProd', message: 'Deploy to production system?', ok: 'Yes'
