@@ -4,34 +4,37 @@ pipeline {
 	maven 'Maven3'
     }
     stages {
-
-        stage('Build') {
+        stage('Compile') {
             steps {
-                    sh 'mvn -B -DskipTests clean package'
+                    stage("Compilation and Analysis") {
+                        parallel 'Compilation': {
+                            sh 'mvn -B -DskipTests clean package'
+                        }, 'Static Analysis': {
+                            stage("Checkstyle") {
+                                sh "./mvnw checkstyle:checkstyle"
+
+                                step([$class: 'CheckStylePublisher',
+                                  canRunOnFailed: true,
+                                  defaultEncoding: '',
+                                  healthy: '100',
+                                  pattern: '**/target/checkstyle-result.xml',
+                                  unHealthy: '90',
+                                  useStableBuildAsReference: true
+                                ])
+                            }
+                        }
+                    }
                 }
             }
             stage('Test') {
                 steps {
+
                     sh 'mvn test'
                 }
                 post {
                     always {
                         junit 'target/surefire-reports/*.xml'
                     }
-                }
-            }
-            stage("Checkstyle") {
-                steps {
-                    sh "mvn checkstyle:checkstyle"
-
-                    step([$class: 'CheckStylePublisher',
-                      canRunOnFailed: true,
-                      defaultEncoding: '',
-                      healthy: '100',
-                      pattern: '**/target/checkstyle-result.xml',
-                      unHealthy: '90',
-                      useStableBuildAsReference: true
-                    ])
                 }
             }
             stage('QA') {
