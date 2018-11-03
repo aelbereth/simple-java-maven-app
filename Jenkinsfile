@@ -11,7 +11,6 @@ pipeline {
                 }
                 stage("Checkstyle") {
                     sh "mvn checkstyle:checkstyle"
-
                     step([$class: 'CheckStylePublisher',
                       canRunOnFailed: true,
                       defaultEncoding: '',
