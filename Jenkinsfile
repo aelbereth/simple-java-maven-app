@@ -5,25 +5,21 @@ pipeline {
     }
     stages {
         stage('Compile') {
-            steps {
-                    stage("Compilation and Analysis") {
-                        parallel 'Compilation': {
-                            sh 'mvn -B -DskipTests clean package'
-                        }, 'Static Analysis': {
-                            stage("Checkstyle") {
-                                sh "mvn checkstyle:checkstyle"
+            parallel {
+                stage("Compilation and Analysis") {
+                        sh 'mvn -B -DskipTests clean package'
+                }
+                stage("Checkstyle") {
+                    sh "mvn checkstyle:checkstyle"
 
-                                step([$class: 'CheckStylePublisher',
-                                  canRunOnFailed: true,
-                                  defaultEncoding: '',
-                                  healthy: '100',
-                                  pattern: '**/target/checkstyle-result.xml',
-                                  unHealthy: '90',
-                                  useStableBuildAsReference: true
-                                ])
-                            }
-                        }
-                    }
+                    step([$class: 'CheckStylePublisher',
+                      canRunOnFailed: true,
+                      defaultEncoding: '',
+                      healthy: '100',
+                      pattern: '**/target/checkstyle-result.xml',
+                      unHealthy: '90',
+                      useStableBuildAsReference: true
+                    ])
                 }
             }
             stage('Test') {
