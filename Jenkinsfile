@@ -43,8 +43,7 @@ pipeline {
                     try {
                         sh "mvn test -Punit"
                     } catch(err) {
-                        step([$class: 'JUnitResultArchiver', testResults:
-                          '**/target/surefire-reports/TEST-*UnitTest.xml'])
+                        step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
                         throw err
                     }
                 }
@@ -57,9 +56,7 @@ pipeline {
                     try {
                         sh "mvn test -Pintegration"
                     } catch(err) {
-                        step([$class: 'JUnitResultArchiver', testResults:
-                          '**/target/surefire-reports/TEST-'
-                            + '*IntegrationTest.xml'])
+                        step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-'+ '*IntegrationTest.xml'])
                         throw err
                     }
                 }
