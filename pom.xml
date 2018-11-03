@@ -4,7 +4,7 @@
   <groupId>is.test.spring</groupId>
   <artifactId>TestSpring</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
+  <version>SNAPSHOT-1.0</version>
   <name>TestSpring</name>
   <url>http://maven.apache.org</url>
 
