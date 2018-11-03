@@ -4,9 +4,9 @@ pipeline {
 	maven 'Maven3'
     }
     stages {
-        stage('Compile') {
+        stage('Compilation and Analysis') {
             parallel {
-                stage("Compilation and Analysis") {
+                stage("Compilation") {
                     steps {
                         sh 'mvn -B -DskipTests clean package'
                     }
@@ -26,7 +26,7 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
+        stage('Testing') {
             steps {
 
                 sh 'mvn test'
@@ -45,12 +45,12 @@ pipeline {
             }
           }
         }
-        stage('M2Store') {
+        stage('M2Storage') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
             }
         }
-        stage('Package'){
+        stage('Packaging'){
             when {
                 branch "master"
             }
