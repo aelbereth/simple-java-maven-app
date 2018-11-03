@@ -22,7 +22,7 @@ pipeline {
             }
             stage("Checkstyle") {
                 steps {
-                    sh "./mvnw checkstyle:checkstyle"
+                    sh "mvn checkstyle:checkstyle"
 
                     step([$class: 'CheckStylePublisher',
                       canRunOnFailed: true,
