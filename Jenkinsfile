@@ -4,14 +4,6 @@ pipeline {
 	maven 'Maven3'
     }
     stages {
-        stage ('first stage') {
-            when {
-                branch 'master'
-             }
-             steps {
-                 input id: 'Approve', message: 'Approve', ok: 'Yes'
-             }
-        }
         stage('Compilation and Analysis') {
             parallel {
                 stage("Compilation") {
@@ -86,6 +78,14 @@ pipeline {
                     sh 'nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=7070 &'
                 }
             }
+        }
+        stage ('Production deployment') {
+            when {
+                branch 'master'
+             }
+             steps {
+                 input id: 'Deploy to production system?', message: 'Approve', ok: 'Yes'
+             }
         }
     }
     post {
