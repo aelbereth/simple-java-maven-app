@@ -4,6 +4,11 @@ pipeline {
 	maven 'Maven3'
     }
     stages {
+        stage ('first stage') {
+            steps {
+                input("Ready to proceed?")
+            }
+        }
         stage('Compilation and Analysis') {
             parallel {
                 stage("Compilation") {
