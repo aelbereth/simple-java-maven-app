@@ -36,7 +36,14 @@ pipeline {
                 }
             }
         }
-
+        stage('Runing unit tests') {
+            steps {
+                step {
+                    sh 'mvn test -Punit'
+                }
+                step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
+            }
+        }
         stage('QA') {
           steps {
             withSonarQubeEnv('SonarQube') {
