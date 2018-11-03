@@ -26,16 +26,6 @@ pipeline {
                 }
             }
         }
-        stage('Testing') {
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
-            }
-        }
         stage('Runing unit tests') {
             steps {
                 sh 'mvn test -Punit'
@@ -88,3 +78,16 @@ pipeline {
     }
 }
 
+        //disabled testing stage as we are running unit and integration tests using profiles defined in pom
+        /*
+        stage('Testing') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+        */
