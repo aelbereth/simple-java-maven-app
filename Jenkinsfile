@@ -40,13 +40,15 @@ pipeline {
         stage("Runing unit tests") {
             steps {
                 step {
-                    try {
-                        step {
-                            sh 'mvn test -Punit'
+                    script {
+                        try {
+                            step {
+                                sh 'mvn test -Punit'
+                            }
+                        } catch(err) {
+                            step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
+                            throw err
                         }
-                    } catch(err) {
-                        step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
-                        throw err
                     }
                 }
                 step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
@@ -55,14 +57,17 @@ pipeline {
         stage("Runing integration tests") {
             steps {
                 step {
-                    try {
-                        step {
-                            sh 'mvn test -Pintegration'
+                    script {
+                        try {
+                            step {
+                                sh 'mvn test -Pintegration'
+                            }
+                        } catch(err) {
+                            step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-'+ '*IntegrationTest.xml'])
+                            throw err
                         }
-                    } catch(err) {
-                        step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-'+ '*IntegrationTest.xml'])
-                        throw err
                     }
+
                 }
                 step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-'+ '*IntegrationTest.xml'])
             }
