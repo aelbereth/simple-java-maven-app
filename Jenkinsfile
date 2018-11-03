@@ -11,7 +11,7 @@ pipeline {
                             sh 'mvn -B -DskipTests clean package'
                         }, 'Static Analysis': {
                             stage("Checkstyle") {
-                                sh "./mvnw checkstyle:checkstyle"
+                                sh "mvn checkstyle:checkstyle"
 
                                 step([$class: 'CheckStylePublisher',
                                   canRunOnFailed: true,
