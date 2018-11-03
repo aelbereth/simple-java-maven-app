@@ -74,7 +74,7 @@ pipeline {
         stage("Staging") {
             steps {
                 sh 'pid=\$(lsof -i:7070 -t); kill -TERM \$pid || kill -KILL \$pid'
-                sh 'nohup mvn spring-boot:run -Dserver.port=7070 &'
+                sh 'nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=7070 &'
             }
         }
     }
