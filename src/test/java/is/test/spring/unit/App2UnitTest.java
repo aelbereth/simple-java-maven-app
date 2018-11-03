@@ -1,6 +1,6 @@
-package com.mycompany.app.unit;
+package is.test.spring.unit;
 
-import com.mycompany.app.App;
+import is.test.spring.App;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

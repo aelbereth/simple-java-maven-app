@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package is.test.spring;
 
 /**
  * Hello world!

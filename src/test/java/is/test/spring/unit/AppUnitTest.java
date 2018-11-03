@@ -1,9 +1,9 @@
-package com.mycompany.app.unit;
+package is.test.spring.unit;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import com.mycompany.app.App;
+import is.test.spring.App;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;

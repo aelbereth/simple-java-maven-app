@@ -1,6 +1,6 @@
-package com.mycompany.app.integration;
+package is.test.spring.integration;
 
-import com.mycompany.app.App;
+import is.test.spring.App;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import static org.junit.Assert.fail;
 /**
  * Unit test for simple App.
  */
-public class IntTest
+public class IntegrationTest
 {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();

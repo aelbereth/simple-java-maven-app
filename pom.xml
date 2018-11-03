@@ -33,7 +33,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>com.mycompany.app.App</mainClass>
+              <mainClass>is.test.spring.App</mainClass>
             </manifest>
           </archive>
         </configuration>
