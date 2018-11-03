@@ -38,10 +38,14 @@ pipeline {
         }
         stage('Runing unit tests') {
             steps {
-                step {
-                    sh 'mvn test -Punit'
-                }
+                sh 'mvn test -Punit'
                 step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
+            }
+        }
+        stage('Runing integration tests') {
+            steps {
+                sh 'mvn test -Pintegration'
+                step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-'+ '*IntegrationTest.xml'])
             }
         }
         stage('QA') {
