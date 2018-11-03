@@ -1,7 +1,9 @@
-package com.mycompany.app;
+package com.mycompany.app.unit;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
+import com.mycompany.app.App;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
@@ -10,7 +12,7 @@ import static org.junit.Assert.*;
 /**
  * Unit test for simple App.
  */
-public class AppTest
+public class AppUnitTest
 {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
