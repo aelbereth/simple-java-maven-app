@@ -40,7 +40,7 @@ pipeline {
         stage("Runing unit tests") {
             steps {
                 try {
-                    step([sh "mvn test -Punit"])
+                    step([sh 'mvn test -Punit'])
                 } catch(err) {
                     step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
                     throw err
@@ -51,7 +51,7 @@ pipeline {
         stage("Runing integration tests") {
             steps {
                 try {
-                    step([sh "mvn test -Pintegration"])
+                    step([sh 'mvn test -Pintegration'])
                 } catch(err) {
                     step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-'+ '*IntegrationTest.xml'])
                     throw err
