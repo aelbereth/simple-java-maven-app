@@ -39,26 +39,30 @@ pipeline {
         }
         stage("Runing unit tests") {
             steps {
-                try {
-                    step {
-                        sh 'mvn test -Punit'
+                step {
+                    try {
+                        step {
+                            sh 'mvn test -Punit'
+                        }
+                    } catch(err) {
+                        step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
+                        throw err
                     }
-                } catch(err) {
-                    step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
-                    throw err
                 }
                 step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
             }
         }
         stage("Runing integration tests") {
             steps {
-                try {
-                    step {
-                        sh 'mvn test -Pintegration'
+                step {
+                    try {
+                        step {
+                            sh 'mvn test -Pintegration'
+                        }
+                    } catch(err) {
+                        step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-'+ '*IntegrationTest.xml'])
+                        throw err
                     }
-                } catch(err) {
-                    step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-'+ '*IntegrationTest.xml'])
-                    throw err
                 }
                 step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-'+ '*IntegrationTest.xml'])
             }
