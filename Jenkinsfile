@@ -73,10 +73,8 @@ pipeline {
         }
         stage("Staging") {
             steps {
-                sh "pid=\$(lsof -i:7070 -t); kill -TERM \$pid "+ "|| kill -KILL \$pid"
-                withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
-                    sh 'nohup mvn spring-boot:run -Dserver.port=7070 &'
-                }
+                sh 'pid=\$(lsof -i:7070 -t); kill -TERM \$pid || kill -KILL \$pid'
+                sh 'nohup mvn spring-boot:run -Dserver.port=7070 &'
             }
         }
     }
