@@ -22,46 +22,47 @@ pipeline {
                     ])
                 }
             }
-            stage('Test') {
-                steps {
+        }
+        stage('Test') {
+            steps {
 
-                    sh 'mvn test'
-                }
-                post {
-                    always {
-                        junit 'target/surefire-reports/*.xml'
-                    }
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
-            stage('QA') {
-              steps {
-                withSonarQubeEnv('SonarQube') {
-                  // requires SonarQube Scanner for Maven 3.2+
-                  sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
-                }
-              }
+        }
+        stage('QA') {
+          steps {
+            withSonarQubeEnv('SonarQube') {
+              // requires SonarQube Scanner for Maven 3.2+
+              sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
             }
-            stage('M2Store') {
-                steps {
-                    sh './jenkins/scripts/deliver.sh'
+          }
+        }
+        stage('M2Store') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+            }
+        }
+        stage('Package'){
+            when {
+                branch "master"
+            }
+            steps {
+                script {
+                    def server = Artifactory.server('artifactory')
+                    def rtMaven = Artifactory.newMavenBuild()
+                    rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+                    rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
+                    rtMaven.tool = 'Maven3'
+                    def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'install'
+                    server.publishBuildInfo buildInfo
                 }
             }
-            stage('Package'){
-                when {
-                    branch "master"
-                }
-                steps {
-                    script {
-                        def server = Artifactory.server('artifactory')
-                        def rtMaven = Artifactory.newMavenBuild()
-                        rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
-                        rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
-                        rtMaven.tool = 'Maven3'
-                        def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'install'
-                        server.publishBuildInfo buildInfo
-                    }
-                }
-            }
+        }
     }
     post {
         success {
