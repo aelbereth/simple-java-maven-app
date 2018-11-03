@@ -84,7 +84,7 @@ pipeline {
                 branch 'master'
              }
              steps {
-                 input id: 'Deploy to production system?', message: 'Approve', ok: 'Yes'
+                 input id: 'DeployToProd', message: 'Deploy to production system?', ok: 'Yes'
              }
         }
     }
