@@ -5,9 +5,12 @@ pipeline {
     }
     stages {
         stage ('first stage') {
-            steps {
-                input("Ready to proceed?")
-            }
+            when {
+                branch 'master'
+             }
+             steps {
+                 input id: 'Approve', message: 'Approve', ok: 'Yes'
+             }
         }
         stage('Compilation and Analysis') {
             parallel {
