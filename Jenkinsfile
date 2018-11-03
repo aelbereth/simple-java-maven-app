@@ -11,7 +11,7 @@ pipeline {
                         sh 'mvn -B -DskipTests clean package'
                     }
                 }
-                stage("Checkstyle") {
+                stage("Checkstyle checking") {
                     steps {
                         sh "mvn checkstyle:checkstyle"
                         step([$class: 'CheckStylePublisher',
@@ -26,16 +26,20 @@ pipeline {
                 }
             }
         }
-        stage('Runing unit tests') {
-            steps {
-                sh 'mvn test -Punit'
-                step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
-            }
-        }
-        stage('Runing integration tests') {
-            steps {
-                sh 'mvn test -Pintegration'
-                step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-'+ '*IntegrationTest.xml'])
+        stage('Testing') {
+            parallel {
+                stage("Unit testing") {
+                    steps {
+                        sh 'mvn test -Punit'
+                        step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-*UnitTest.xml'])
+                    }
+                }
+                stage("Integration testing") {
+                    steps {
+                        sh 'mvn test -Pintegration'
+                        step([$class: 'JUnitResultArchiver', testResults:'**/target/surefire-reports/TEST-'+ '*IntegrationTest.xml'])
+                    }
+                }
             }
         }
         stage('QA') {
